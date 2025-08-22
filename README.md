@@ -25,8 +25,8 @@ Your job is to merge both features together, which will create a merge conflict 
 A **branch** is like a separate timeline for your code. It allows you to work on features independently without affecting the main codebase.
 
 - `main` (or `master`) - The primary branch with stable code
-- `letter-multipliers` - A branch for developing letter bonus functionality  
-- `word-multipliers` - A branch for developing word bonus functionality
+- `letter-multi` - A branch for developing letter bonus functionality  
+- `word-multiplier` - A branch for developing word bonus functionality
 
 Think of it like this:
 ```
@@ -49,7 +49,7 @@ git switch <branch-name>
 
 **Create and switch in one command:**
 ```bash
-git checkout -b <branch-name>
+git switch -c <branch-name>
 ```
 
 **See all branches:**
@@ -67,9 +67,32 @@ git branch --show-current
 **Merging** combines the changes from one branch into another.
 
 ```bash
-git checkout main                    # Switch to target branch
-git merge feature/branch-name        # Merge the feature branch
+git switch main                      # Switch to target branch
+git merge letter-multi               # Merge the feature branch
 ```
+
+### Important: Saving Your Work Before Switching
+
+**Always commit your changes before switching branches!**
+
+```bash
+git add .                           # Stage your changes
+git commit -m "Your commit message" # Save your changes
+git switch other-branch             # Now it's safe to switch
+```
+
+**What happens if you don't commit before switching?**
+
+Git will either:
+1. **Block the switch** if you have conflicting changes:
+   ```
+   error: Your local changes would be overwritten by checkout.
+   Please commit your changes or stash them before you switch.
+   ```
+
+2. **Take your changes with you** if there are no conflicts - this can be confusing because your uncommitted changes appear on the new branch!
+
+**Best practice:** Always commit your work before switching branches. This keeps each branch's history clean and prevents confusion.
 
 When you merge, Git tries to automatically combine the changes. Sometimes it succeeds, sometimes it doesn't...
 
@@ -98,7 +121,7 @@ When this happens, Git stops and asks YOU to decide how to resolve the conflict.
 
 **Check out the first feature branch:**
 ```bash
-git switch letter-multipliers
+git switch letter-multi
 ```
 - Run the script and see what's different
 - Look at how the `calculate_score()` function changed
@@ -106,10 +129,10 @@ git switch letter-multipliers
 
 **Check out the second feature branch:**
 ```bash
-git switch word-multipliers
+git switch word-multiplier
 ```
 - Run this version too
-- Compare the `calculate_score()` function to the letter-multipliers version
+- Compare the `calculate_score()` function to the letter-multi version
 - See what different functionality was added
 
 **Return to main:**
@@ -119,12 +142,17 @@ git switch main
 
 ### Step 3: Attempt the Merge
 
-**First merge the branch of your choice**
-
+**First merge (this should work smoothly):**
+```bash
+git merge letter-multi
+```
 - This should succeed without conflicts
 - Test the script to make sure it works
 
-**Second merge the other branch (this will create a conflict!):**
+**Second merge (this will create a conflict!):**
+```bash
+git merge word-multiplier
+```
 - Git will stop and tell you there's a conflict
 - Don't panic! This is expected.
 
@@ -146,10 +174,10 @@ git status
 
 ```python
 <<<<<<< HEAD
-# Code from the current branch (main + letter-multipliers)
+# Code from the current branch (main + letter-multi)
 =======
-# Code from the branch you're trying to merge (word-multipliers)
->>>>>>> feature/word-multipliers
+# Code from the branch you're trying to merge (word-multiplier)
+>>>>>>> word-multiplier
 ```
 
 ### Step 5: Resolve the Conflict
@@ -159,17 +187,23 @@ Your job is to:
 1. **Understand both versions** - What does each version do?
 2. **Combine the functionality** - Both features should work together
 3. **Remove the conflict markers** - Delete the `<<<<<<<`, `=======`, and `>>>>>>>` lines
-4. **Create a working solution** - The merged code should support both letter AND word multipliers
+4. **Create a working solution** - Think about how to merge the function parameters and logic
 
-**Important:** In real Scrabble, letter bonuses are applied first, then word bonuses are applied to the total.
+**Hint:** Consider how you might need to modify the function signature to accept both types of parameters, and how the logic should handle both types of bonuses.
 
 ### Step 6: Complete the Merge
 
 After resolving the conflicts:
 
 1. **Test your solution** - Make sure both types of bonuses work
-2. **Add the resolved file to the staging area:**
-3. **Complete the merge by commiting the conflicted files:**
+2. **Add the resolved file:**
+   ```bash
+   git add scrabble_score.py
+   ```
+3. **Complete the merge:**
+   ```bash
+   git commit -m "Resolve merge conflict: combine letter and word multipliers"
+   ```
 
 ### Step 7: Verify Your Solution
 
@@ -186,6 +220,12 @@ Your final solution should be able to handle:
 - **Test as you go** - Run the script after each step to make sure it works
 - **Don't just copy-paste** - Think about how to logically combine the features
 
+## Common Mistakes to Avoid
+
+- Don't just pick one version and ignore the other
+- Don't forget to remove the conflict markers (`<<<<<<<`, `=======`, `>>>>>>>`)
+- Don't merge without testing - make sure your solution actually works
+- Don't panic when you see a conflict - it's a normal part of development!
 
 ## What to Do When You're Done
 
