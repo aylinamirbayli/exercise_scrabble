@@ -213,32 +213,25 @@ Your final solution should be able to handle:
 - Word multipliers only  
 - Both letter AND word multipliers together
 
-## Tips for Success
+## Step 8: Add Dictionary Validation
 
-- **Read the code carefully** - Understand what each version does before merging
-- **Think about the domain** - How do Scrabble bonuses actually work?
-- **Test as you go** - Run the script after each step to make sure it works
-- **Don't just copy-paste** - Think about how to logically combine the features
+Now it's your turn to add a new feature from scratch!
 
-## Common Mistakes to Avoid
+### The Task
 
-- Don't just pick one version and ignore the other
-- Don't forget to remove the conflict markers (`<<<<<<<`, `=======`, `>>>>>>>`)
-- Don't merge without testing - make sure your solution actually works
-- Don't panic when you see a conflict - it's a normal part of development!
+Add a dictionary check to validate if words are real. You have a `dico.txt` file with valid words (one per line, uppercase).
 
-## What to Do When You're Done
+### What to do:
 
-1. **Test your merged solution thoroughly**
-2. **Make sure all Git conflicts are resolved** (`git status` should be clean)
-3. **Your `main` branch should now have both features working together**
+- Create your own feature branch (pick any name you like)
+- Make the program check if the word exists in the dictionary
+- Tell the user if their word is valid or not
+- Merge back to main when you're done
 
-## Getting Help
+### Requirements:
 
-If you get stuck:
-- Use `git status` to see what's happening
-- Look at the conflict markers carefully
-- Think about what each piece of code is trying to do
-- Remember: the goal is to make both features work together
+Your feature should read `dico.txt` and check if the input word is in there. Handle the case where the file doesn't exist.
 
-Good luck! Merge conflicts might seem scary at first, but they're a normal part of collaborative development. Once you understand them, you'll be much more confident working on team projects.
+Remember the workflow: create branch → code → test → commit → merge to main.
+
+You've got this!
