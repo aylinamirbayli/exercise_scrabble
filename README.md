@@ -54,7 +54,10 @@ git switch -c <branch-name>
 
 **See all branches:**
 ```bash
-git branch
+git branch -a
+# or
+git branch --all
+# If you just use git branch, without the --all, you don't see the remote branch
 ```
 
 **See current branch:**
