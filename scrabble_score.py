@@ -1,42 +1,28 @@
-from typing import List, Optional, Tuple
+LETTER_SCORES = {
+    "A": 1, "B": 3, "C": 3, "D": 2, "E": 1,
+    "F": 4, "G": 2, "H": 4, "I": 1, "J": 8,
+    "K": 5, "L": 1, "M": 3, "N": 1, "O": 1,
+    "P": 3, "Q": 10, "R": 1, "S": 1, "T": 1,
+    "U": 1, "V": 4, "W": 4, "X": 8, "Y": 4, "Z": 10
+}
 
-def get_letter_value(letter: str) -> int:
-    """Get the point value for a letter"""
-    values = {
-        'A': 1, 'E': 1, 'I': 1, 'O': 1, 'U': 1, 'L': 1, 'N': 1, 'S': 1, 'T': 1, 'R': 1,
-        'D': 2, 'G': 2,
-        'B': 3, 'C': 3, 'M': 3, 'P': 3,
-        'F': 4, 'H': 4, 'V': 4, 'W': 4, 'Y': 4,
-        'K': 5,
-        'J': 8, 'X': 8,
-        'Q': 10, 'Z': 10
-    }
-    return values.get(letter.upper(), 0)
+def calculate_score(word, letter_multipliers=None, word_multiplier=1):
+    word = word.upper()
+    if letter_multipliers is None:
+        letter_multipliers = [1] * len(word)
+    
+    total = sum(
+        LETTER_SCORES.get(letter, 0) * mult
+        for letter, mult in zip(word, letter_multipliers)
+    )
+    return total * word_multiplier
 
-def calculate_score(word: str, letter_multipliers: Tuple[int, ...]) -> int:
-    """Calculate score with double/triple letter bonuses"""
-    total = 0
-    for i, letter in enumerate(word):
-        letter_score = get_letter_value(letter)
-        
-        # Apply letter multiplier if specified for this position
-        if i < len(letter_multipliers):
-            letter_score *= letter_multipliers[i]
-            
-        total += letter_score
-    return total
-
-def main() -> None:
+def main():
     word = "PYTHON"
-    # Double letter on P (position 0), triple letter on Y (position 2)
-    multipliers = (2, 1, 3, 1, 1, 1) 
-    baseline = tuple(1 for _ in range(len(word)))
-    
-    basic_score = calculate_score(word, baseline)
-    bonus_score = calculate_score(word, multipliers)
-    
-    print(f"The word '{word}' scores {basic_score} points normally")
-    print(f"With letter bonuses: {bonus_score} points")
+    print(f"The word '{word}' scores {calculate_score(word)} points normally")
+    print(f"With letter bonuses: {calculate_score(word, [2, 1, 3, 1, 1, 1])} points")
+    print(f"On double word score: {calculate_score(word, word_multiplier=2)} points")
+    print(f"Letter bonuses on a triple word: {calculate_score(word, [2, 1, 3, 1, 1, 1], word_multiplier=3)} points")
 
 if __name__ == "__main__":
     main()
