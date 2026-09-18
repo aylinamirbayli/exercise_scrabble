@@ -1,3 +1,5 @@
+from typing import List, Optional, Tuple
+
 def get_letter_value(letter: str) -> int:
     """Get the point value for a letter"""
     values = {
@@ -11,17 +13,30 @@ def get_letter_value(letter: str) -> int:
     }
     return values.get(letter.upper(), 0)
 
-def calculate_score(word: str) -> int:
-    """Calculate the total score for a word"""
+def calculate_score(word: str, letter_multipliers: Tuple[int, ...]) -> int:
+    """Calculate score with double/triple letter bonuses"""
     total = 0
-    for letter in word:
-        total += get_letter_value(letter)
+    for i, letter in enumerate(word):
+        letter_score = get_letter_value(letter)
+        
+        # Apply letter multiplier if specified for this position
+        if i < len(letter_multipliers):
+            letter_score *= letter_multipliers[i]
+            
+        total += letter_score
     return total
 
 def main() -> None:
     word = "PYTHON"
-    score = calculate_score(word)
-    print(f"The word '{word}' scores {score} points")
+    # Double letter on P (position 0), triple letter on Y (position 2)
+    multipliers = (2, 1, 3, 1, 1, 1) 
+    baseline = tuple(1 for _ in range(len(word)))
+    
+    basic_score = calculate_score(word, baseline)
+    bonus_score = calculate_score(word, multipliers)
+    
+    print(f"The word '{word}' scores {basic_score} points normally")
+    print(f"With letter bonuses: {bonus_score} points")
 
 if __name__ == "__main__":
     main()
